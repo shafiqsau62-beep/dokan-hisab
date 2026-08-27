@@ -1,23 +1,14 @@
 {
+  "name": "মুক্তিযোদ্ধা স্টোর — হিসাব সিস্টেম",
   "short_name": "মুক্তিযোদ্ধা স্টোর",
-  "name": "মুক্তিযোদ্ধা স্টোর - দোয়ারাবাজার",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
-    }
-  ],
-  "start_url": "/",
-  "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "description": "মুক্তিযোদ্ধা স্টোরের হিসাব, বিক্রি ও স্টক ব্যবস্থাপনা",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait"
+  "background_color": "#ffffff",
+  "theme_color": "#087f4e",
+  "lang": "bn",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
 }

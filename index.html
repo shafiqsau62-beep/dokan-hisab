@@ -34,7 +34,7 @@ input,select{width:100%;padding:11px;border:1px solid #d6e2dd;border-radius:10px
 // Final shop information and multi-unit product examples.
 const SHOP_INFO={name:"মুক্তিযোদ্ধা স্টোর",address:"বাংলাবাজার, দোয়ারাবাজার, সুনামগঞ্জ",mobile:"০১৯১৮০৬২৯৬৫"};
 </script>
-</head>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#087f4e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="মুক্তিযোদ্ধা স্টোর"></head>
 <body>
 <div class="app">
 <header><div class="brand">মুক্তিযোদ্ধা স্টোর</div><div class="sub">বাংলাবাজার, দোয়ারাবাজার, সুনামগঞ্জ • ০১৯১৮০৬২৯৬৫</div></header>
@@ -195,5 +195,5 @@ function go(p){render(p)}
 document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>render(n.dataset.page));
 window.cart=[];
 </script>
-</body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
 </html>

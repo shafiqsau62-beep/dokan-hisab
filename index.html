@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>মুক্তিযোদ্ধা স্টোর — হিসাব সিস্টেম</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;background:#f3f7f5;color:#163229}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:520px;margin:auto;min-height:100vh;background:#fff}
+header{background:#087f4e;color:#fff;padding:18px 16px 16px;position:sticky;top:0;z-index:5}
+.brand{font-size:23px;font-weight:800}.sub{opacity:.85;font-size:12px;margin-top:3px}
+main{padding:14px 14px 84px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#fff;border:1px solid #e1ebe6;border-radius:14px;padding:13px;box-shadow:0 2px 8px #173b2a0b}
+.stat b{display:block;font-size:20px;margin-top:5px}.green{color:#087f4e}.red{color:#d83a3a}.orange{color:#b76d00}.muted{color:#6b7d76;font-size:12px}
+h2{font-size:18px;margin:5px 0 12px}.section{margin-top:18px}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.action{padding:13px 7px;border-radius:12px;background:#eff8f3;color:#087f4e;font-weight:700;text-align:center}
+.row{display:flex;gap:8px;align-items:center}.between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+input,select{width:100%;padding:11px;border:1px solid #d6e2dd;border-radius:10px;background:#fff;outline:none}input:focus,select:focus{border-color:#087f4e}
+.btn{background:#087f4e;color:#fff;padding:11px 14px;border-radius:10px;font-weight:700}.btn.alt{background:#eaf6f0;color:#087f4e}.btn.red{background:#feecec;color:#c22d2d}
+.list{display:flex;flex-direction:column;gap:8px}.item{border:1px solid #e3ebe7;border-radius:12px;padding:11px}.item small{color:#718079}.price{font-weight:800}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:520px;width:100%;background:#fff;border-top:1px solid #dde7e2;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px;z-index:6}
+.nav{background:none;color:#65756e;font-size:11px;padding:5px}.nav.active{color:#087f4e;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}
+.modal{position:fixed;inset:0;background:#0007;z-index:20;display:none;align-items:flex-end}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-width:520px;margin:auto;border-radius:20px 20px 0 0;padding:18px;max-height:90vh;overflow:auto}
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#173229;color:#fff;padding:10px 15px;border-radius:10px;display:none;z-index:30;font-size:13px}
+.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:8px 4px;border-bottom:1px solid #edf1ef;text-align:left}
+.hidden{display:none!important}.pill{padding:4px 8px;border-radius:99px;background:#eff8f3;color:#087f4e;font-size:11px}
+@media(min-width:600px){body{padding:20px}.app{border-radius:18px;overflow:hidden;box-shadow:0 10px 40px #173b2a14}}
+.print-invoice{display:none}
+@page{size:A5 portrait;margin:8mm}@media print{html,body{background:#fff!important;margin:0!important;padding:0!important}.app{max-width:none!important;box-shadow:none!important}.app>header,.bottom,main,.modal,.toast{display:none!important}.print-invoice{display:block!important;width:100%;padding:0;font-family:Arial,"Noto Sans Bengali",sans-serif;color:#111}.print-invoice h1{text-align:left;font-size:16px;margin:0 0 1px}.print-invoice .shop-sub{text-align:left;font-size:9px;line-height:1.25}.print-invoice .inv-title{text-align:center;font-size:14px;font-weight:700;margin:5px 0;border-top:1px solid #222;padding-top:4px}.print-invoice table{width:100%;border-collapse:collapse;font-size:8.5px}.print-invoice th,.print-invoice td{border-bottom:1px solid #777;padding:3px 2px}.print-invoice th{background:#f3f3f3}.print-invoice .right{text-align:right}.print-invoice .summary{width:48%;margin-left:auto}.print-invoice .summary td{border:0;padding:2px}.print-invoice .terms{margin-top:6px;font-size:8px;line-height:1.3}.print-invoice .sign{margin-top:25px;text-align:right;font-size:8px}}
+</style>
+
+<style>.final-banner{background:#fff7df;border:1px solid #f0d58a;color:#6b4b00;border-radius:12px;padding:11px;margin:0 0 12px;font-size:12px}.shopinfo{font-size:11px;opacity:.9;margin-top:4px}</style>
+<script>
+// Final shop information and multi-unit product examples.
+const SHOP_INFO={name:"মুক্তিযোদ্ধা স্টোর",address:"বাংলাবাজার, দোয়ারাবাজার, সুনামগঞ্জ",mobile:"০১৯১৮০৬২৯৬৫"};
+</script>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">মুক্তিযোদ্ধা স্টোর</div><div class="sub">বাংলাবাজার, দোয়ারাবাজার, সুনামগঞ্জ • ০১৯১৮০৬২৯৬৫</div></header>
+<main id="main"></main><div id="printArea" class="print-invoice"></div>
+<nav class="bottom">
+<button class="nav active" data-page="home"><span>⌂</span>হোম</button>
+<button class="nav" data-page="sale"><span>🛒</span>বিক্রি</button>
+<button class="nav" data-page="products"><span>📦</span>পণ্য</button>
+<button class="nav" data-page="more"><span>☰</span>আরও</button>
+</nav>
+</div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://dohvekkkqpwqubwaynqk.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_iHw5DHMYfj9bCl5a1SR2vQ_vC8SzAGh";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let currentUser=null;
+let cloudTimer=null;
+async function cloudSave(){if(!currentUser)return;const payload={user_id:currentUser.id,data:db,updated_at:new Date().toISOString()};const {error}=await supabaseClient.from("store_data").upsert(payload,{onConflict:"user_id"});if(error)console.error(error)}
+async function cloudLoad(){if(!currentUser)return;const {data,error}=await supabaseClient.from("store_data").select("data").eq("user_id",currentUser.id).maybeSingle();if(error){console.error(error);toast("অনলাইন ডাটাবেসে সংযোগ হয়নি");return}if(data?.data){db=data.data;localStorage.setItem(KEY,JSON.stringify(db))}else{await cloudSave()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudSave,250)}
+function showLogin(){document.getElementById("main").innerHTML=`<div class="card" style="margin-top:25px"><h2>অনলাইন হিসাব সিস্টেম</h2><p class="muted">Supabase অ্যাকাউন্ট দিয়ে লগইন করুন। একই ডাটা অন্য মোবাইল/কম্পিউটার থেকেও পাওয়া যাবে।</p><input id="loginEmail" type="email" placeholder="ইমেইল"><br><br><input id="loginPass" type="password" placeholder="পাসওয়ার্ড"><br><br><div class="row"><button class="btn" onclick="login()">লগইন</button><button class="btn alt" onclick="signup()">নতুন অ্যাকাউন্ট</button></div></div>`}
+async function login(){const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPass").value;if(!email||!password)return toast("ইমেইল ও পাসওয়ার্ড দিন");const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)return toast(error.message)}
+async function signup(){const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPass").value;if(!email||password.length<6)return toast("ইমেইল দিন এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন");const {error}=await supabaseClient.auth.signUp({email,password});if(error)return toast(error.message);toast("অ্যাকাউন্ট তৈরি হয়েছে—ইমেইল ভেরিফাই করুন যদি চাওয়া হয়") }
+async function logout(){await supabaseClient.auth.signOut()}
+supabaseClient.auth.getSession().then(async ({data})=>{currentUser=data.session?.user||null;if(currentUser){await cloudLoad();render("home")}else showLogin()});
+supabaseClient.auth.onAuthStateChange(async (_event,session)=>{currentUser=session?.user||null;if(currentUser){await cloudLoad();render("home")}else showLogin()});
+
+const KEY="muktijoddha_store_v1";
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ products:[
+  {id:1,name:"চাল মিনিকেট",code:"RICE001",unit:"কেজি",stock:250,cost:68,lastPrice:80},
+  {id:2,name:"সয়াবিন তেল",code:"OIL001",unit:"লিটার",stock:85,cost:180,lastPrice:210},
+  {id:3,name:"মসুর ডাল",code:"DAL001",unit:"কেজি",stock:50,cost:120,lastPrice:140},
+  {id:4,name:"চিনি",code:"SUG001",unit:"কেজি",stock:100,cost:125,lastPrice:140}
+ ],
+ customers:[],sales:[],purchases:[],expenses:[]
+};
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function money(n){return "৳ "+Number(n||0).toLocaleString("bn-BD",{maximumFractionDigits:2})}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function toast(t){let x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
+function openModal(title,body){document.getElementById("sheet").innerHTML=`<div class="between"><h2>${title}</h2><button class="btn red" onclick="closeModal()">✕</button></div>${body}`;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+
+function totals(){
+ let sales=db.sales.reduce((a,x)=>a+x.total,0), purchases=db.purchases.reduce((a,x)=>a+x.total,0), expenses=db.expenses.reduce((a,x)=>a+x.amount,0);
+ let due=db.sales.reduce((a,x)=>a+(x.due||0),0);
+ return {sales,purchases,expenses,due,profit:sales-purchases-expenses}
+}
+function render(page="home"){
+ document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+ let m=document.getElementById("main"); let t=totals();
+ if(page==="home")m.innerHTML=home(t);
+ if(page==="sale")m.innerHTML=salePage();
+ if(page==="products")m.innerHTML=productsPage();
+ if(page==="more")m.innerHTML=morePage(t);
+}
+function home(t){return `
+<div class="final-banner"><b>মুক্তিযোদ্ধা স্টোর</b><br>বাংলাবাজার, দোয়ারাবাজার, সুনামগঞ্জ<br>মোবাইল: ০১৯১৮০৬২৯৬৫</div><h2>আজকের সারাংশ</h2>
+<div class="grid">
+ <div class="card stat"><span class="muted">মোট বিক্রি</span><b class="green">${money(t.sales)}</b></div>
+ <div class="card stat"><span class="muted">মোট ক্রয়</span><b>${money(t.purchases)}</b></div>
+ <div class="card stat"><span class="muted">মোট বাকি</span><b class="red">${money(t.due)}</b></div>
+ <div class="card stat"><span class="muted">আনুমানিক লাভ</span><b class="green">${money(t.profit)}</b></div>
+</div>
+<div class="section"><h2>দ্রুত কাজ</h2><div class="actions">
+ <button class="action" onclick="go('sale')">🛒<br>নতুন বিক্রি</button>
+ <button class="action" onclick="go('products');setTimeout(addProduct,50)">➕<br>পণ্য যোগ</button>
+ <button class="action" onclick="go('more');setTimeout(addPurchase,50)">🚚<br>নতুন ক্রয়</button>
+ <button class="action" onclick="go('more');setTimeout(addCustomer,50)">👤<br>কাস্টমার</button>
+ <button class="action" onclick="go('more');setTimeout(addExpense,50)">💸<br>খরচ</button>
+ <button class="action" onclick="go('more');setTimeout(report,50)">📊<br>রিপোর্ট</button>
+</div></div>
+<div class="section"><h2>সাম্প্রতিক বিক্রি</h2>${db.sales.length?`<div class="list">${db.sales.slice(-5).reverse().map(s=>`<div class="item between"><div><b>${esc(s.customer||"খুচরা কাস্টমার")}</b><br><small>${s.items.length}টি পণ্য • ${s.payment}</small></div><div><b class="green">${money(s.total)}</b><br><button class="btn alt" style="padding:6px 8px;margin-top:4px" onclick='showInvoice(${JSON.stringify(s).replace(/"/g,"&quot;")})'>Invoice Print</button></div></div>`).join("")}</div>`:`<div class="card muted">এখনো কোনো বিক্রির হিসাব নেই।</div>`}</div>`}
+function salePage(){
+ let rows=window.cart||[];
+ return `<div class="between"><h2>নতুন বিক্রি</h2><button class="btn alt" onclick="clearCart()">নতুন</button></div>
+ <div class="card"><input id="searchSale" placeholder="পণ্যের নাম/কোড লিখুন" oninput="searchProducts()"><div id="saleSearch" class="list" style="margin-top:8px"></div></div>
+ <div class="section"><h2>বিক্রির তালিকা</h2><div id="cart">${cartHtml(rows)}</div></div>
+ <div class="card"><div class="between"><b>সর্বমোট</b><b class="green" id="saleTotal">${money(rows.reduce((a,x)=>a+x.qty*x.price,0))}</b></div>
+ <div class="row" style="margin-top:10px"><input id="customerName" placeholder="কাস্টমারের নাম (ঐচ্ছিক)"><select id="pay"><option>নগদ</option><option>বাকি</option><option>আংশিক পরিশোধ</option></select></div>
+ <button class="btn" style="width:100%;margin-top:10px" onclick="finishSale()">বিক্রি সম্পন্ন করুন</button></div>`;
+}
+function cartHtml(rows){if(!rows.length)return `<div class="card muted">পণ্য যোগ করুন। প্রতিটি পণ্যের দাম এখানে পরিবর্তন করতে পারবেন।</div>`;
+ return rows.map((x,i)=>`<div class="item"><div class="between"><b>${esc(x.name)}</b><button class="btn red" onclick="removeCart(${i})">✕</button></div>
+ <div class="row" style="margin-top:8px"><input type="number" min="0.01" value="${x.qty}" onchange="editCart(${i},'qty',this.value)" placeholder="পরিমাণ"><select onchange="editCartUnit(${i},this.value)"><option value="base" ${x.saleUnit==='base'?"selected":""}>${esc(x.unit)}</option>${x.pack?`<option value="pack" ${x.saleUnit==='pack'?"selected":""}>${esc(x.pack)}</option>`:""}</select><input type="number" min="0" value="${x.price}" onchange="editCart(${i},'price',this.value)" placeholder="দাম"><b>${money(x.qty*x.price)}</b></div><small>${x.saleUnit==='pack'&&x.conv?`১ ${esc(x.pack)} = ${x.conv} ${esc(x.unit)}`:esc(x.unit)}</small></div>`).join("")}
+function searchProducts(){let q=document.getElementById("searchSale").value.toLowerCase();let out=db.products.filter(p=>(p.name+" "+(p.brand||"")+" "+(p.size||"")+" "+p.code).toLowerCase().includes(q)).slice(0,8).map(p=>`<button class="item" style="text-align:left;background:#fff" onclick="addCart(${p.id})"><div class="between"><b>${esc(p.name)}${p.brand?" — "+esc(p.brand):""} ${p.size?"("+esc(p.size)+")":""}</b><span class="pill">স্টক ${p.stock} ${esc(p.unit)}</span></div><small>${p.code||""} • ${p.pack?`১ ${esc(p.pack)} = ${p.conv} ${esc(p.unit)} • `:""}সর্বশেষ ${money(p.lastPrice)}/${esc(p.unit)}</small></button>`).join("");document.getElementById("saleSearch").innerHTML=out}
+function addCart(id){let p=db.products.find(x=>x.id===id);window.cart=window.cart||[];let x=window.cart.find(x=>x.id===id);if(x)x.qty++;else window.cart.push({id:p.id,name:p.name,brand:p.brand,size:p.size,unit:p.unit,pack:p.pack,conv:p.conv||1,qty:1,price:p.lastPrice,saleUnit:"base"});render("sale");setTimeout(()=>{document.getElementById("searchSale").focus();searchProducts()},0)}
+function editCart(i,k,v){window.cart[i][k]=Number(v);render("sale")}
+function editCartUnit(i,v){let x=window.cart[i];if(v==="pack"){x.saleUnit="pack";x.qty=1;x.price=(x.price||0)*(x.conv||1)}else{x.saleUnit="base";x.qty=1;x.price=(x.price||0)/(x.conv||1)}render("sale")}
+function removeCart(i){window.cart.splice(i,1);render("sale")}
+function clearCart(){window.cart=[];render("sale")}
+function finishSale(){
+ let rows=window.cart||[];if(!rows.length)return toast("আগে পণ্য যোগ করুন");
+ let total=rows.reduce((a,x)=>a+x.qty*x.price,0), pay=document.getElementById("pay").value, customer=document.getElementById("customerName").value.trim();
+ let paid=pay==="নগদ"?total:pay==="বাকি"?0:Number(prompt("কত টাকা পেয়েছেন?",total)||0);
+ if(paid<0||paid>total)return toast("টাকার পরিমাণ ঠিক নয়");
+ for(const x of rows){let p=db.products.find(p=>p.id===x.id);let baseQty=x.saleUnit==="pack"?(x.qty*(x.conv||1)):x.qty;if(baseQty>p.stock)return toast(`${p.name} এর পর্যাপ্ত স্টক নেই`);}
+ rows.forEach(x=>{let p=db.products.find(p=>p.id===x.id);let baseQty=x.saleUnit==="pack"?(x.qty*(x.conv||1)):x.qty;p.stock-=baseQty;p.lastPrice=x.saleUnit==="pack"?x.price/(x.conv||1):x.price});
+ let due=total-paid;let sale={id:Date.now(),date:new Date().toISOString(),customer:customer||"খুচরা কাস্টমার",total,paid,due,payment:pay,items:rows.map(x=>({...x}))};
+ db.sales.push(sale);
+ if(customer){let c=db.customers.find(c=>c.name===customer);if(!c)db.customers.push({id:Date.now()+1,name:customer,mobile:""})}
+ save();window.cart=[];showInvoice(sale);render("home");
+}
+function numBn(n){return Number(n||0).toLocaleString("bn-BD",{maximumFractionDigits:2})}
+function showInvoice(s){
+ const dt=new Date(s.date);
+ const rows=s.items.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}${x.size?" — "+esc(x.size):""}</td><td class="right">${numBn(x.qty)} ${esc(x.saleUnit==="pack"?(x.pack||x.unit):x.unit)}</td><td class="right">${money(x.price)}</td><td class="right">${money(x.qty*x.price)}</td></tr>`).join("");
+ document.getElementById("printArea").innerHTML=`<h1>${esc(SHOP_INFO.name)}</h1><div class="shop-sub">${esc(SHOP_INFO.address)}<br>মোবাইল: ${esc(SHOP_INFO.mobile)}</div><div class="inv-title">Invoice</div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px"><div><b>Bill To:</b> ${esc(s.customer||"খুচরা কাস্টমার")}</div><div><b>Date:</b> ${dt.toLocaleDateString("en-GB")}<br><b>Time:</b> ${dt.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})}</div></div><table><tr><th>#</th><th>Item name</th><th>Quantity</th><th>Price/Unit</th><th>Amount</th></tr>${rows}</table><table class="summary"><tr><td>Sub Total</td><td class="right">${money(s.total)}</td></tr><tr><td>Received</td><td class="right">${money(s.paid)}</td></tr><tr><td>Balance</td><td class="right">${money(s.due)}</td></tr></table><div class="terms"><b>Invoice Amount In Words:</b> ${amountWords(s.total)} only<br><b>Terms and conditions:</b> সততা ও বিশ্বস্ততা ব্যবসায় সাফল্যের একমাত্র চাবিকাঠি।</div><div class="sign">For, ${esc(SHOP_INFO.name)}<br><br><br>Authorized Signatory</div>`;
+ setTimeout(()=>window.print(),150);
+}
+function amountWords(n){n=Math.round(Number(n||0));if(n===0)return "Zero";let a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"],b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];function x(v){if(v<20)return a[v];if(v<100)return b[Math.floor(v/10)]+(v%10?" "+a[v%10]:"");if(v<1000)return a[Math.floor(v/100)]+" Hundred"+(v%100?" "+x(v%100):"");if(v<100000)return x(Math.floor(v/1000))+" Thousand"+(v%1000?" "+x(v%1000):"");if(v<10000000)return x(Math.floor(v/100000))+" Lakh"+(v%100000?" "+x(v%100000):"");return x(Math.floor(v/10000000))+" Crore"+(v%10000000?" "+x(v%10000000):"")}return x(n)}
+
+function productsPage(){let totalValue=db.products.reduce((a,p)=>a+(Number(p.stock)||0)*(Number(p.cost)||0),0);let low=db.products.filter(p=>(Number(p.stock)||0)<=5).length;return `<div class="between"><h2>পণ্য ও স্টক</h2><button class="btn" onclick="addProduct()">+ পণ্য</button></div><div class="grid"><div class="card stat"><span class="muted">মোট পণ্য</span><b>${numBn(db.products.length)}</b></div><div class="card stat"><span class="muted">স্টকের মূল্য</span><b class="green">${money(totalValue)}</b></div><div class="card stat"><span class="muted">কম স্টক</span><b class="red">${numBn(low)}</b></div><div class="card stat"><span class="muted">মোট ইউনিট</span><b>${numBn(db.products.reduce((a,p)=>a+(Number(p.stock)||0),0))}</b></div></div><input id="productSearch" placeholder="পণ্যের নাম/কোড খুঁজুন" oninput="renderProducts()" style="margin:10px 0"><div id="productList" class="list">${productRows()}</div>`}
+
+function productRows(){let q=(document.getElementById("productSearch")?.value||"").toLowerCase();return db.products.filter(p=>(p.name+" "+(p.brand||"")+" "+(p.size||"")+" "+p.code).toLowerCase().includes(q)).map(p=>{let packs=p.pack?Math.floor(p.stock/(p.conv||1)):0;let loose=p.pack?p.stock%(p.conv||1):p.stock;return `<div class="item"><div class="between"><div><b>${esc(p.name)}${p.brand?" — "+esc(p.brand):""}</b><br><small>${esc(p.size||"")} • ${esc(p.code||"")}</small></div><span class="pill">স্টক ${numBn(p.stock)} ${esc(p.unit)}</span></div><div style="margin-top:7px" class="muted">${p.pack?`স্টক: ${packs} ${esc(p.pack)} + ${loose} ${esc(p.unit)} • ১ ${esc(p.pack)} = ${p.conv} ${esc(p.unit)}`:"বেস ইউনিটে স্টক"}</div><div class="between" style="margin-top:8px"><small>ক্রয় ${money(p.cost)}/${esc(p.unit)} • সর্বশেষ ${money(p.lastPrice)}/${esc(p.unit)}</small><button class="btn alt" onclick="editProduct(${p.id})">এডিট</button></div></div>`}).join("")||`<div class="card muted">কোনো পণ্য পাওয়া যায়নি।</div>`}
+function renderProducts(){document.getElementById("productList").innerHTML=productRows()}
+function addProduct(p=null){openModal(p?"পণ্য সম্পাদনা":"নতুন পণ্য",`<div class="final-banner">একই পণ্যের ব্র্যান্ড, সাইজ ও প্যাকেজ আলাদা রাখতে পারবেন। যেমন ২৫kg/৫০kg বস্তা বা 500ml/1L/2L/5L তেল।</div><input id="pn" placeholder="পণ্যের নাম" value="${esc(p?.name||"")}"><br><br><input id="pb" placeholder="ব্র্যান্ড (যেমন Fresh/Teer)" value="${esc(p?.brand||"")}"><br><br><input id="psize" placeholder="সাইজ (যেমন 500ml/1L/25kg)" value="${esc(p?.size||"")}"><br><br><input id="pu" placeholder="বেস ইউনিট (কেজি/লিটার/পিস)" value="${esc(p?.unit||"")}"><br><br><input id="pack" placeholder="প্যাকেজ ইউনিট (বস্তা/কার্টুন/বোতল)" value="${esc(p?.pack||"")}"><br><br><input id="conv" type="number" min="1" placeholder="১ প্যাকেজে কত বেস ইউনিট" value="${p?.conv??1}"><br><br><input id="pc" placeholder="পণ্য কোড/SKU" value="${esc(p?.code||"")}"><br><br><input id="ps" type="number" placeholder="বর্তমান স্টক (বেস ইউনিট)" value="${p?.stock??0}"><br><br><input id="pcost" type="number" placeholder="ক্রয়মূল্য/বেস ইউনিট" value="${p?.cost??0}"><br><br><input id="pl" type="number" placeholder="সর্বশেষ বিক্রয়মূল্য/বেস ইউনিট" value="${p?.lastPrice??0}"><br><br><button class="btn" style="width:100%" onclick="saveProduct(${p?.id||0})">সংরক্ষণ</button>`)}
+function saveProduct(id){let o={name:pn.value.trim(),brand:pb.value.trim(),size:psize.value.trim(),unit:pu.value.trim(),pack:pack.value.trim(),conv:Number(conv.value)||1,code:pc.value.trim(),stock:Number(ps.value)||0,cost:Number(pcost.value)||0,lastPrice:Number(pl.value)||0};if(!o.name||!o.unit)return toast("পণ্যের নাম ও বেস ইউনিট দিন");if(id){Object.assign(db.products.find(p=>p.id===id),o)}else{db.products.push({id:Date.now(),...o})}save();closeModal();render("products");toast("পণ্য সংরক্ষণ হয়েছে")}
+function editProduct(id){addProduct(db.products.find(p=>p.id===id))}
+
+function morePage(t){return `<div class="card" style="margin-bottom:10px"><div class="between"><span class="muted">অনলাইন অ্যাকাউন্ট</span><button class="btn red" onclick="logout()">লগআউট</button></div></div><div class="actions">
+<button class="action" onclick="customers()">👥<br>কাস্টমার/বাকি</button>
+<button class="action" onclick="addPurchase()">🚚<br>ক্রয়</button>
+<button class="action" onclick="addExpense()">💸<br>খরচ</button>
+<button class="action" onclick="report()">📊<br>রিপোর্ট</button>
+<button class="action" onclick="backup()">💾<br>ব্যাকআপ</button>
+<button class="action" onclick="restore()">♻️<br>ডেটা ফেরত</button>
+</div>
+<div class="section"><h2>সিস্টেম</h2><div class="card"><div class="between"><span>মোট পণ্য</span><b>${db.products.length}</b></div><div class="between"><span>মোট বিক্রির রেকর্ড</span><b>${db.sales.length}</b></div><div class="between"><span>মোট ক্রয়ের রেকর্ড</span><b>${db.purchases.length}</b></div></div></div>`}
+function addCustomer(){openModal("নতুন কাস্টমার",`<input id="cn" placeholder="কাস্টমারের নাম"><br><br><input id="cm" placeholder="মোবাইল নম্বর"><br><br><button class="btn" style="width:100%" onclick="saveCustomer()">সংরক্ষণ</button>`)}
+function saveCustomer(){let name=cn.value.trim();if(!name)return toast("নাম দিন");db.customers.push({id:Date.now(),name,mobile:cm.value.trim()});save();closeModal();toast("কাস্টমার যোগ হয়েছে")}
+function customers(){openModal("কাস্টমার ও বাকি",`<input id="cq" placeholder="কাস্টমার খুঁজুন" oninput="customerRows()"><div id="customerRows" class="list" style="margin-top:10px">${customerRows()}</div><button class="btn" style="width:100%;margin-top:10px" onclick="addCustomer()">+ নতুন কাস্টমার</button>`)}
+function customerRows(){let q=(document.getElementById("cq")?.value||"").toLowerCase();let names=[...db.customers];db.sales.forEach(s=>{if(s.customer&&!names.some(c=>c.name===s.customer))names.push({name:s.customer,mobile:""})});let el=document.getElementById("customerRows");let html=names.filter(c=>c.name.toLowerCase().includes(q)).map(c=>{let due=db.sales.filter(s=>s.customer===c.name).reduce((a,s)=>a+s.due,0);return `<div class="item between"><div><b>${esc(c.name)}</b><br><small>${c.mobile||"মোবাইল নেই"}</small></div><b class="red">${money(due)}</b></div>`}).join("")||`<div class="muted">কোনো কাস্টমার নেই</div>`;if(el)el.innerHTML=html;return html}
+function addPurchase(){openModal("নতুন ক্রয়",`<input id="sup" placeholder="সরবরাহকারী"><br><br><select id="pp">${db.products.map(p=>`<option value="${p.id}">${esc(p.name)} (${p.unit})</option>`).join("")}</select><br><br><input id="pq" type="number" placeholder="পরিমাণ"><br><br><input id="pprice" type="number" placeholder="ক্রয়মূল্য/ইউনিট"><br><br><select id="pPay"><option>নগদ</option><option>বাকি</option></select><br><br><button class="btn" style="width:100%" onclick="savePurchase()">ক্রয় সংরক্ষণ</button>`)}
+function savePurchase(){let p=db.products.find(x=>x.id===Number(pp.value)),qty=Number(pq.value),price=Number(pprice.value);if(!p||qty<=0||price<0)return toast("তথ্য ঠিকভাবে দিন");p.stock+=qty;p.cost=price;db.purchases.push({id:Date.now(),supplier:sup.value.trim(),product:p.name,qty,price,total:qty*price,payment:pPay.value,date:new Date().toISOString()});save();closeModal();toast("ক্রয় সংরক্ষণ হয়েছে")}
+function addExpense(){openModal("নতুন খরচ",`<select id="et"><option>পরিবহন</option><option>বিদ্যুৎ</option><option>ভাড়া</option><option>শ্রমিক</option><option>অন্যান্য</option></select><br><br><input id="ea" type="number" placeholder="টাকার পরিমাণ"><br><br><input id="en" placeholder="নোট"><br><br><button class="btn" style="width:100%" onclick="saveExpense()">খরচ সংরক্ষণ</button>`)}
+function saveExpense(){let amount=Number(ea.value);if(amount<=0)return toast("টাকার পরিমাণ দিন");db.expenses.push({id:Date.now(),type:et.value,amount,note:en.value.trim(),date:new Date().toISOString()});save();closeModal();toast("খরচ সংরক্ষণ হয়েছে")}
+function report(){let t=totals();openModal("রিপোর্ট",`<div class="grid"><div class="card stat"><span class="muted">বিক্রি</span><b>${money(t.sales)}</b></div><div class="card stat"><span class="muted">ক্রয়</span><b>${money(t.purchases)}</b></div><div class="card stat"><span class="muted">খরচ</span><b>${money(t.expenses)}</b></div><div class="card stat"><span class="muted">আনুমানিক লাভ</span><b class="green">${money(t.profit)}</b></div></div><div class="section"><b>স্টক সংক্ষিপ্ত তালিকা</b><table class="table"><tr><th>পণ্য</th><th>স্টক</th><th>মূল্য</th></tr>${db.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.stock} ${p.unit}</td><td>${money(p.cost*p.stock)}</td></tr>`).join("")}</table></div>`)}
+function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="muktijoddha-store-backup.json";a.click();toast("ব্যাকআপ ফাইল তৈরি হয়েছে")}
+function restore(){openModal("ডেটা ফেরত আনুন",`<p class="muted">আগের ব্যাকআপ JSON ফাইল নির্বাচন করুন।</p><input id="file" type="file" accept=".json" onchange="readBackup(event)">`)}
+function readBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();closeModal();render("home");toast("ব্যাকআপ সফলভাবে ফিরেছে")}catch{toast("ফাইলটি সঠিক নয়")}};r.readAsText(f)}
+function go(p){render(p)}
+document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>render(n.dataset.page));
+window.cart=[];
+</script>
+</body>
+</html>
